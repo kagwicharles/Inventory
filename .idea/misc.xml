@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/ic_camera.xml" value="0.19635416666666666" />
+        <entry key="app/src/main/res/drawable/ic_increase_green.xml" value="0.19635416666666666" />
+        <entry key="app/src/main/res/drawable/ic_increase_red.xml" value="0.19635416666666666" />
+        <entry key="app/src/main/res/drawable/ic_upload.xml" value="0.19635416666666666" />
+        <entry key="app/src/main/res/drawable/image_upload_bg.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_add_phone.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_add_phone_category.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_addphoneCategory.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/activity_phone.xml" value="0.14356884057971014" />
+        <entry key="app/src/main/res/layout/add_phone_activity.xml" value="0.1793478260869565" />
+        <entry key="app/src/main/res/layout/dash_item.xml" value="0.17527173913043478" />
+        <entry key="app/src/main/res/layout/phone_category_item.xml" value="0.17119565217391305" />
+        <entry key="app/src/main/res/layout/phone_item.xml" value="0.17119565217391305" />
+        <entry key="app/src/main/res/layout/product_item.xml" value="0.25" />
+        <entry key="app/src/main/res/menu/action_menu.xml" value="0.1" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
