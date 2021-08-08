@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.kagwisoftwares.inventory.entities.Category;
+import com.kagwisoftwares.inventory.utils.MyTransitions;
 import com.kagwisoftwares.inventory.view_model.MyViewModel;
 
 import java.io.ByteArrayOutputStream;
@@ -38,6 +39,7 @@ public class AddCategoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new MyTransitions().animateFade(this);
         setContentView(R.layout.activity_add_phone_category);
         getSupportActionBar().setTitle("Create Brand");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -156,18 +158,6 @@ public class AddCategoryActivity extends AppCompatActivity {
         editText.setText("");
         imageView.setImageResource(R.drawable.ic_upload);
         Toast.makeText(this, "Brand added", Toast.LENGTH_SHORT).show();
-    }
-
-    void animate() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-            Slide slide = new Slide();
-            slide.setSlideEdge(Gravity.LEFT);
-            slide.setDuration(400);
-            slide.setInterpolator(new DecelerateInterpolator());
-            getWindow().setExitTransition(slide);
-            getWindow().setEnterTransition(slide);
-        }
     }
 
 }
