@@ -28,13 +28,4 @@
         <item name="android:textColor">@color/dark_gray</item>
     </style>
 
-    <style name="MyCustomActivityAnimation" parent="@android:style/Animation.Activity">
-        <item name="android:windowEnterTransition">
-            @anim/slide_in_right
-        </item>
-        <item name="android:windowExitTransition">
-            @anim/slide_out_left
-        </item>
-    </style>
-
 </resources>

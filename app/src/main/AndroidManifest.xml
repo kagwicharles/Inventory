@@ -10,10 +10,10 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Inventory"
-        android:requestLegacyExternalStorage="true">
+        android:theme="@style/Theme.Inventory">
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -24,11 +24,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AddCategoryActivity"
-            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".AddCategoryActivity"
+            android:parentActivityName=".MainActivity" />
 
-        <activity android:name=".AddPhoneActivity"
-            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".AddPhoneActivity"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>
