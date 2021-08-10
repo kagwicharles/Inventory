@@ -5,16 +5,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.transition.Slide;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -40,8 +33,8 @@ public class AddCategoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new MyTransitions().animateFade(this);
-        setContentView(R.layout.activity_add_phone_category);
-        getSupportActionBar().setTitle("Create Brand");
+        setContentView(R.layout.activity_add_product);
+        getSupportActionBar().setTitle("Create Product");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         imageView = (ImageView) findViewById(R.id.imgbrandLogo);
@@ -62,22 +55,30 @@ public class AddCategoryActivity extends AppCompatActivity {
                 launchUploadAlert();
             }
         });
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.action_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+        Button saveBrand = (Button) findViewById(R.id.btnSaveBrand);
+        saveBrand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addBrand();
+            }
+        });
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_save) {
-            addBrand();
-            return true;
-        }
-        return true;
-    }
+//
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.action_menu, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        if (item.getItemId() == R.id.action_save) {
+//            addBrand();
+//            return true;
+//        }
+//        return true;
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

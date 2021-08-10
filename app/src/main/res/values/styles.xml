@@ -5,27 +5,32 @@
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">0.7</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
     </style>
 
     <style name="NumberTextAppearance" parent="@android:style/TextAppearance">
         <item name="android:textSize">30sp</item>
         <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:fontFamily">@font/roboto_mono</item>
     </style>
 
     <style name="SmallTitleTextAppearance">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:fontFamily">@font/roboto_mono</item>
     </style>
 
     <style name="SubtitleTextAppearance" parent="@android:style/TextAppearance">
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">0.7</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/roboto_mono</item>
     </style>
 
     <style name="SmallNumberTextAppearance" parent="@android:style/TextAppearance">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:fontFamily">@font/roboto_mono</item>
     </style>
 
 </resources>

@@ -12,5 +12,6 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <!-- Customize your theme here. -->
+        <item name="startIconTint">#2b6734</item>
     </style>
 </resources>
