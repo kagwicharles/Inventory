@@ -3,9 +3,16 @@ package com.kagwisoftwares.inventory.entities;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "phone_table")
+import java.util.Date;
+
+@Entity(tableName = "Phone", foreignKeys = {@ForeignKey(entity = Category.class,
+        parentColumns = "id",
+        childColumns = "categoryId",
+        onDelete = ForeignKey.CASCADE)
+})
 public class Phone {
 
     @PrimaryKey(autoGenerate = true)
@@ -14,72 +21,71 @@ public class Phone {
     private int phoneId;
 
     @NonNull
+    @ColumnInfo(name = "categoryId", index = true)
+    private int categoryId;
+
+    @NonNull
     @ColumnInfo(name = "category")
     private String phoneCategory;
 
     @NonNull
     @ColumnInfo(name = "ram")
-    private int phoneRam;
+    private String phoneRam;
 
     @NonNull
     @ColumnInfo(name = "storage")
-    private int phoneStorage;
+    private String phoneStorage;
 
-    @ColumnInfo(name = "processor_type")
-    private String phoneProcessorType;
+    @ColumnInfo(name = "primary_camera")
+    private String primaryCameraPixels;
 
-    @ColumnInfo(name = "front_camera")
-    private String phoneFrontCameraPixels;
-
-    @ColumnInfo(name = "back_camera")
-    private String phoneBackCameraPixels;
-
-    @ColumnInfo(name = "android_version")
-    private String phoneAndroidVersion;
-
-    @ColumnInfo(name = "battery_capacity")
-    private String phoneBatteryCapacity;
+    @ColumnInfo(name = "os_version")
+    private String osVersion;
 
     @ColumnInfo(name = "total_units")
     private int phoneUnits;
 
+    @ColumnInfo(name = "date_created")
+    private Date date;
+
     public int getPhoneId() {
         return phoneId;
     }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
     public String getPhoneCategory() {
         return phoneCategory;
     }
 
-    public int getPhoneRam() {
+    public String getPhoneRam() {
         return phoneRam;
     }
 
-    public int getPhoneStorage() {
+    public String getPhoneStorage() {
         return phoneStorage;
     }
 
-    public String getPhoneProcessorType() {
-        return phoneProcessorType;
+    public String getPrimaryCameraPixels() {
+        return primaryCameraPixels;
     }
 
-    public String getPhoneFrontCameraPixels() {
-        return phoneFrontCameraPixels;
-    }
-
-    public String getPhoneBackCameraPixels() {
-        return phoneBackCameraPixels;
-    }
-
-    public String getPhoneAndroidVersion() {
-        return phoneAndroidVersion;
-    }
-
-    public String getPhoneBatteryCapacity() {
-        return phoneBatteryCapacity;
+    public String getOsVersion() {
+        return osVersion;
     }
 
     public int getPhoneUnits() {
         return phoneUnits;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public void setPhoneId(int phoneId) {
@@ -90,36 +96,27 @@ public class Phone {
         this.phoneCategory = phoneCategory;
     }
 
-    public void setPhoneRam(int phoneRam) {
+    public void setPhoneRam(String phoneRam) {
         this.phoneRam = phoneRam;
     }
 
-    public void setPhoneStorage(int phoneStorage) {
+    public void setPhoneStorage(String phoneStorage) {
         this.phoneStorage = phoneStorage;
     }
 
-    public void setPhoneProcessorType(String phoneProcessorType) {
-        this.phoneProcessorType = phoneProcessorType;
+    public void setPrimaryCameraPixels(String primaryCameraPixels) {
+        this.primaryCameraPixels = primaryCameraPixels;
     }
 
-    public void setPhoneFrontCameraPixels(String phoneFrontCameraPixels) {
-        this.phoneFrontCameraPixels = phoneFrontCameraPixels;
-    }
-
-    public void setPhoneBackCameraPixels(String phoneBackCameraPixels) {
-        this.phoneBackCameraPixels = phoneBackCameraPixels;
-    }
-
-    public void setPhoneAndroidVersion(String phoneAndroidVersion) {
-        this.phoneAndroidVersion = phoneAndroidVersion;
-    }
-
-    public void setPhoneBatteryCapacity(String phoneBatteryCapacity) {
-        this.phoneBatteryCapacity = phoneBatteryCapacity;
+    public void setOsVersion(String osVersion) {
+        this.osVersion = osVersion;
     }
 
     public void setPhoneUnits(int phoneUnits) {
         this.phoneUnits = phoneUnits;
     }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }

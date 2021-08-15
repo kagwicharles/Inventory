@@ -19,7 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import com.kagwisoftwares.inventory.entities.Category;
 import com.kagwisoftwares.inventory.utils.MyTransitions;
-import com.kagwisoftwares.inventory.view_model.MyViewModel;
+import com.kagwisoftwares.inventory.viewmodels.MyViewModel;
 
 import java.io.ByteArrayOutputStream;
 
@@ -64,21 +64,6 @@ public class AddCategoryActivity extends AppCompatActivity {
             }
         });
     }
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.action_menu, menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (item.getItemId() == R.id.action_save) {
-//            addBrand();
-//            return true;
-//        }
-//        return true;
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

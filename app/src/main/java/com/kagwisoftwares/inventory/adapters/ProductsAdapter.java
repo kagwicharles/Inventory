@@ -1,5 +1,6 @@
 package com.kagwisoftwares.inventory.adapters;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -7,14 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.internal.ViewOverlayImpl;
 import com.kagwisoftwares.inventory.R;
+import com.kagwisoftwares.inventory.StockListingActivity;
+import com.kagwisoftwares.inventory.db.Inventorydb;
 import com.kagwisoftwares.inventory.entities.Category;
-import com.kagwisoftwares.inventory.models.ProductModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHolder> {
@@ -69,6 +72,27 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
         viewHolder.getCategoryIcon().setImageBitmap(setImage(categories.get(position).getCategory_image()));
         viewHolder.getArrowRight().setImageResource(R.drawable.ic_line_graph);
         viewHolder.getCategoryTotal().setText(String.valueOf(100));
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        int itemId = Inventorydb.
+                                getDatabase(view.getContext().getApplicationContext()).dao().getCategory(viewHolder.getCategoryName().getText().toString());
+                        Intent intent = new Intent(view.getContext(), StockListingActivity.class);
+                        intent.putExtra("CATEGORY_ID", itemId);
+                        view.getContext().startActivity(intent);
+                    }
+                };
+                thread.start();
+            }
+        });
+    }
+
+    void getItemId() {
+
     }
 
     @Override

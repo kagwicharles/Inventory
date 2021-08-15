@@ -5,15 +5,19 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
 import com.kagwisoftwares.inventory.Dao.Dao;
+import com.kagwisoftwares.inventory.converters.Converters;
 import com.kagwisoftwares.inventory.entities.Category;
+import com.kagwisoftwares.inventory.entities.OtherElectronics;
 import com.kagwisoftwares.inventory.entities.Phone;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Phone.class, Category.class}, version = 1, exportSchema = false)
+@Database(entities = {Phone.class, Category.class, OtherElectronics.class}, version = 1, exportSchema = false)
+@TypeConverters({Converters.class})
 public abstract class Inventorydb extends RoomDatabase {
 
     public abstract Dao dao();

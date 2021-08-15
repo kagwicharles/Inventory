@@ -18,9 +18,9 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.kagwisoftwares.inventory.adapters.DashAdapter;
 import com.kagwisoftwares.inventory.adapters.ProductsAdapter;
 import com.kagwisoftwares.inventory.entities.Category;
-import com.kagwisoftwares.inventory.item_decorator.GridSpacingItemDecoration;
+import com.kagwisoftwares.inventory.decorators.GridSpacingItemDecoration;
 import com.kagwisoftwares.inventory.models.ItemModel;
-import com.kagwisoftwares.inventory.view_model.MyViewModel;
+import com.kagwisoftwares.inventory.viewmodels.MyViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,22 +102,19 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     emptyList.setVisibility(View.GONE);
                 }
-
                 Log.d("CATEGORIES SIZE: ", String.valueOf(noOfProducts));
             }
         });
     }
 
-    private ArrayList<ItemModel> getDashItems(int noProducts) {
+    private void getDashItems(int noProducts) {
         ArrayList<ItemModel> items = new ArrayList<>();
 
         itemsRecycler.setLayoutManager(new GridLayoutManager(this, 2));
         itemsRecycler.addItemDecoration(new GridSpacingItemDecoration(2, 20, false));
-
         items.add(new ItemModel("Total Products", noProducts, 0.004, R.drawable.ic_increase_green));
         items.add(new ItemModel("Stock In Hand", 300, 0.0290, R.drawable.ic_increase_red));
         itemsRecycler.setAdapter(new DashAdapter(items));
-        return items;
     }
 
 }
