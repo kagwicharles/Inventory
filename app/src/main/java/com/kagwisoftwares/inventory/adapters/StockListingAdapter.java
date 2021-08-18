@@ -11,27 +11,21 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kagwisoftwares.inventory.R;
-import com.kagwisoftwares.inventory.entities.Phone;
-import com.kagwisoftwares.inventory.models.StockCategoriesModel;
+import com.kagwisoftwares.inventory.entities.ProductItem;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class StockListingAdapter extends RecyclerView.Adapter<StockListingAdapter.ViewHolder> {
 
-    private final List<Phone> stockItems;
+    private final List<ProductItem> stockItems;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView stockItem, stockTotal, stockIn, stockOut, dateModified;
+        private final TextView stockItem, stockTotal;
 
         public ViewHolder(View view) {
             super(view);
             stockItem = (TextView) view.findViewById(R.id.subCategory);
-            stockTotal = (TextView) view.findViewById(R.id.totalItems);
-            stockIn = (TextView) view.findViewById(R.id.totalIn);
-            stockOut = (TextView) view.findViewById(R.id.totalOut);
-            dateModified = (TextView) view.findViewById(R.id.dateModified);
+            stockTotal = (TextView) view.findViewById(R.id.stockTotal);
         }
 
         public TextView getStockItem() {
@@ -42,21 +36,9 @@ public class StockListingAdapter extends RecyclerView.Adapter<StockListingAdapte
             return stockTotal;
         }
 
-        public TextView getStockIn() {
-            return stockIn;
-        }
-
-        public TextView getStockOut() {
-            return stockOut;
-        }
-
-        public TextView getDateModified() {
-            return dateModified;
-        }
-
     }
 
-    public StockListingAdapter(List<Phone> stockItems) {
+    public StockListingAdapter(List<ProductItem> stockItems) {
         this.stockItems = stockItems;
     }
 
@@ -70,15 +52,9 @@ public class StockListingAdapter extends RecyclerView.Adapter<StockListingAdapte
     @Override
     public void onBindViewHolder(StockListingAdapter.ViewHolder viewHolder, int position) {
         int stockSize = stockItems.size();
-        DateFormat df = new SimpleDateFormat("MM/dd/yy");
         Log.d("STOCK SIZE ", String.valueOf(stockSize));
-
-        viewHolder.getStockItem().setText(stockItems.get(position).getPhoneCategory());
-        viewHolder.getStockTotal().setText(String.valueOf(stockSize));
-        viewHolder.getDateModified().setText("");
-        viewHolder.getStockIn().setText("");
-        viewHolder.getStockOut().setText("");
-
+        viewHolder.getStockItem().setText(stockItems.get(position).getItem_name());
+        viewHolder.getStockTotal().setText("");
     }
 
     @Override

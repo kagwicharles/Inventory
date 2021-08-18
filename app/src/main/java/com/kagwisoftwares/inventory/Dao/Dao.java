@@ -7,7 +7,8 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 
 import com.kagwisoftwares.inventory.entities.Category;
-import com.kagwisoftwares.inventory.entities.Phone;
+import com.kagwisoftwares.inventory.entities.ProductAttribute;
+import com.kagwisoftwares.inventory.entities.ProductItem;
 import com.kagwisoftwares.inventory.models.StockCategoriesModel;
 
 import java.util.List;
@@ -16,16 +17,19 @@ import java.util.List;
 public interface Dao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertPhone(Phone phone);
+    void insertProductItem(ProductItem productItem);
 
-    @Query("DELETE FROM phone")
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertProductAttribute(ProductAttribute productAttribute);
+
+    @Query("DELETE FROM product_item")
     void deleteAllPhone();
 
-    @Query("SELECT * FROM phone ORDER BY category ASC")
-    LiveData<List<Phone>> getPhones();
+    @Query("SELECT * FROM product_item ORDER BY item_name ASC")
+    LiveData<List<ProductItem>> getProductItems();
 
-    @Query("SELECT * FROM phone WHERE categoryId=:id ORDER BY category ASC")
-    List<Phone> getPhonesById(int id);
+    @Query("SELECT * FROM product_item WHERE categoryId=:id ORDER BY item_name ASC")
+    List<ProductItem> getProductItemsById(int id);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertCategory(Category category);
@@ -40,6 +44,15 @@ public interface Dao {
     @Query("SELECT * FROM category")
     LiveData<List<StockCategoriesModel>> getAllStock();
 
+    @Query("SELECT * FROM product_attribute WHERE id=:id")
+    LiveData<List<ProductAttribute>> getProductAttributesById(int id);
+
     @Query("SELECT id FROM category WHERE category_name=:name")
     int getCategory(String name);
+
+    @Query("SELECT id FROM product_item WHERE item_name=:name")
+    int getProductIdByName(String name);
+
+    @Query("SELECT id FROM product_item ORDER BY id DESC LIMIT 1")
+    int getLastProductId();
 }

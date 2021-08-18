@@ -1,5 +1,6 @@
 package com.kagwisoftwares.inventory;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -17,9 +18,12 @@ import android.view.View;
 import com.airbnb.lottie.LottieAnimationView;
 import com.kagwisoftwares.inventory.adapters.DashAdapter;
 import com.kagwisoftwares.inventory.adapters.ProductsAdapter;
+import com.kagwisoftwares.inventory.db.Inventorydb;
 import com.kagwisoftwares.inventory.entities.Category;
 import com.kagwisoftwares.inventory.decorators.GridSpacingItemDecoration;
+import com.kagwisoftwares.inventory.entities.ProductItem;
 import com.kagwisoftwares.inventory.models.ItemModel;
+import com.kagwisoftwares.inventory.repositories.MyRepository;
 import com.kagwisoftwares.inventory.viewmodels.MyViewModel;
 
 import java.util.ArrayList;
@@ -33,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView itemsRecycler, productsRecycler;
     private MyViewModel myViewModel;
     private ProductsAdapter productsAdapter;
+    private ArrayList<ItemModel> items;
+    private int allStock;
 
     private FloatingActionsMenu addFab;
     private FloatingActionButton addPhone, addCategory;
@@ -77,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         addPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddPhoneActivity.class);
+                Intent intent = new Intent(MainActivity.this, AddProductItemActivity.class);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
                 } else {
@@ -91,12 +97,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Category> categories) {
                 int noOfProducts = categories.size();
-                productsAdapter = new ProductsAdapter(categories);
+                productsAdapter = new ProductsAdapter(categories, MainActivity.this);
                 productsRecycler.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
                 productsRecycler.setAdapter(productsAdapter);
 
-                getDashItems(noOfProducts);
-
+                getDashItems(noOfProducts, setDashItems());
                 if (noOfProducts == 0) {
                     emptyList.setVisibility(View.VISIBLE);
                 } else {
@@ -107,14 +112,30 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getDashItems(int noProducts) {
-        ArrayList<ItemModel> items = new ArrayList<>();
-
+    private void getDashItems(int noProducts, int allStock) {
+        items = new ArrayList<>();
         itemsRecycler.setLayoutManager(new GridLayoutManager(this, 2));
         itemsRecycler.addItemDecoration(new GridSpacingItemDecoration(2, 20, false));
         items.add(new ItemModel("Total Products", noProducts, 0.004, R.drawable.ic_increase_green));
-        items.add(new ItemModel("Stock In Hand", 300, 0.0290, R.drawable.ic_increase_red));
+        items.add(new ItemModel("Stock In Hand", allStock, 0.0290, R.drawable.ic_increase_red));
         itemsRecycler.setAdapter(new DashAdapter(items));
+    }
+
+    int setDashItems() {
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                int allStockNo = Inventorydb.getDatabase(getApplicationContext()).dao().getLastProductId();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        allStock = allStockNo;
+                    }
+                });
+            }
+        };
+        thread.start();
+        return allStock;
     }
 
 }

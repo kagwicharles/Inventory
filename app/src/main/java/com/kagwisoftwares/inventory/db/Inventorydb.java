@@ -10,13 +10,13 @@ import androidx.room.TypeConverters;
 import com.kagwisoftwares.inventory.Dao.Dao;
 import com.kagwisoftwares.inventory.converters.Converters;
 import com.kagwisoftwares.inventory.entities.Category;
-import com.kagwisoftwares.inventory.entities.OtherElectronics;
-import com.kagwisoftwares.inventory.entities.Phone;
+import com.kagwisoftwares.inventory.entities.ProductAttribute;
+import com.kagwisoftwares.inventory.entities.ProductItem;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Phone.class, Category.class, OtherElectronics.class}, version = 1, exportSchema = false)
+@Database(entities = {ProductAttribute.class, Category.class, ProductItem.class}, version = 1, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class Inventorydb extends RoomDatabase {
 

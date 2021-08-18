@@ -4,7 +4,7 @@ import androidx.room.Embedded;
 import androidx.room.Relation;
 
 import com.kagwisoftwares.inventory.entities.Category;
-import com.kagwisoftwares.inventory.entities.Phone;
+import com.kagwisoftwares.inventory.entities.ProductItem;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class StockCategoriesModel {
             parentColumn = "id",
             entityColumn = "categoryId"
     )
-    private List<Phone> phones;
+    private List<ProductItem> productItems;
 
     public void setCategory(Category category) {
         this.category = category;
@@ -27,11 +27,11 @@ public class StockCategoriesModel {
         return category;
     }
 
-    public void setPhones(List<Phone> phones) {
-        this.phones = phones;
+    public void setProductItems(List<ProductItem> productItems) {
+        this.productItems = productItems;
     }
 
-    public List<Phone> getPhones() {
-        return phones;
+    public List<ProductItem> getProductItems() {
+        return productItems;
     }
 }

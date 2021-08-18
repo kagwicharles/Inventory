@@ -39,7 +39,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView4"
                 app:placeholderText="Samsung etc."
                 app:startIconDrawable="@drawable/ic_category"
-                app:startIconTint="#2b6734">
+                app:startIconTint="#bf2f1f">
 
                 <EditText
                     android:id="@+id/etbrandName"

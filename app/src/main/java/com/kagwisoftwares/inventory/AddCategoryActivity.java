@@ -32,7 +32,7 @@ public class AddCategoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new MyTransitions().animateFade(this);
+        //new MyTransitions().animateFade(this);
         setContentView(R.layout.activity_add_product);
         getSupportActionBar().setTitle("Create Product");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

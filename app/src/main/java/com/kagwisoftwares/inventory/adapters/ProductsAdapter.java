@@ -1,8 +1,11 @@
 package com.kagwisoftwares.inventory.adapters;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.internal.ViewOverlayImpl;
+import com.kagwisoftwares.inventory.MainActivity;
 import com.kagwisoftwares.inventory.R;
 import com.kagwisoftwares.inventory.StockListingActivity;
 import com.kagwisoftwares.inventory.db.Inventorydb;
@@ -23,6 +27,7 @@ import java.util.List;
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHolder> {
 
     private List<Category> categories;
+    private Activity activity;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView categoryName, categoryTotal;
@@ -54,8 +59,9 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
 
     }
 
-    public ProductsAdapter(List<Category> categories) {
+    public ProductsAdapter(List<Category> categories, Activity activity) {
         this.categories = categories;
+        this.activity = activity;
     }
 
     @Override

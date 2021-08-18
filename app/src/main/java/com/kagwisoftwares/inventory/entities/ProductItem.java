@@ -7,13 +7,17 @@ import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
-@Entity(tableName = "other_electronics")
-public class OtherElectronics {
+@Entity(tableName = "product_item")
+public class ProductItem {
 
     @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "id")
     private int itemId;
+
+    @NonNull
+    @ColumnInfo(name = "categoryId", index = true)
+    private int categoryId;
 
     @NonNull
     @ColumnInfo(name = "item_name")
@@ -40,6 +44,13 @@ public class OtherElectronics {
 
     public void setItem_image(byte[] item_image) {
         this.item_image = item_image;
+    }
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
     }
 
     public int getItemId() {

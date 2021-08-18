@@ -1,14 +1,10 @@
 package com.kagwisoftwares.inventory;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,9 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.kagwisoftwares.inventory.adapters.StockListingAdapter;
 import com.kagwisoftwares.inventory.db.Inventorydb;
-import com.kagwisoftwares.inventory.entities.Phone;
-import com.kagwisoftwares.inventory.models.StockCategoriesModel;
-import com.kagwisoftwares.inventory.viewmodels.MyViewModel;
+import com.kagwisoftwares.inventory.entities.ProductItem;
+import com.kagwisoftwares.inventory.utils.MyTransitions;
 
 import java.util.List;
 
@@ -27,15 +22,16 @@ public class StockListingActivity extends AppCompatActivity {
     private StockListingAdapter stocksAdapter;
     private RecyclerView stockRecycler;
 
-    private List<Phone> phones;
+    private List<ProductItem> productItems;
 
     private LottieAnimationView emptyList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new MyTransitions().animateFade(this);
         setContentView(R.layout.activity_stock_listing);
-        getSupportActionBar().setTitle("Available Stock");
+        getSupportActionBar().setTitle("All Stock");
 
         stockRecycler = (RecyclerView) findViewById(R.id.stockRecycler);
         emptyList = (LottieAnimationView) findViewById(R.id.emptyProductAnim);
@@ -49,17 +45,17 @@ public class StockListingActivity extends AppCompatActivity {
         Thread thread = new Thread() {
             @Override
             public void run() {
-                phones = Inventorydb.getDatabase(getApplicationContext()).dao().getPhonesById(itemId);
-                Log.d("PHONES BY ID ", phones.toString());
+                productItems = Inventorydb.getDatabase(getApplicationContext()).dao().getProductItemsById(itemId);
+                Log.d("PHONES BY ID ", productItems.toString());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (phones.size() == 0)
+                        if (productItems.size() == 0)
                             emptyList.setVisibility(View.VISIBLE);
                         else
                             emptyList.setVisibility(View.GONE);
 
-                        stocksAdapter = new StockListingAdapter(phones);
+                        stocksAdapter = new StockListingAdapter(productItems);
                         LinearLayoutManager layoutManager = new LinearLayoutManager(StockListingActivity.this, LinearLayoutManager.VERTICAL, false);
                         stockRecycler.setLayoutManager(layoutManager);
                         stockRecycler.addItemDecoration(new DividerItemDecoration(stockRecycler.getContext(), layoutManager.getOrientation()));
