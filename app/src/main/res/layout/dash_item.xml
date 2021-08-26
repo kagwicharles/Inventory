@@ -64,5 +64,13 @@
             app:layout_constraintTop_toTopOf="@+id/txtitemPercentage"
             app:srcCompat="@drawable/ic_increase_green" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="%"
+            app:layout_constraintBottom_toBottomOf="@+id/txtitemPercentage"
+            app:layout_constraintStart_toEndOf="@+id/txtitemPercentage"
+            app:layout_constraintTop_toTopOf="@+id/txtitemPercentage" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

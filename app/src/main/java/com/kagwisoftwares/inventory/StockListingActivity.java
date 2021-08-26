@@ -13,7 +13,6 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.kagwisoftwares.inventory.adapters.StockListingAdapter;
 import com.kagwisoftwares.inventory.db.Inventorydb;
 import com.kagwisoftwares.inventory.entities.ProductItem;
-import com.kagwisoftwares.inventory.utils.MyTransitions;
 
 import java.util.List;
 
@@ -29,7 +28,6 @@ public class StockListingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new MyTransitions().animateFade(this);
         setContentView(R.layout.activity_stock_listing);
         getSupportActionBar().setTitle("All Stock");
 
@@ -40,7 +38,7 @@ public class StockListingActivity extends AppCompatActivity {
         getStock(getIntent().getIntExtra("CATEGORY_ID", 0));
 
     }
-    
+
     void getStock(int itemId) {
         Thread thread = new Thread() {
             @Override

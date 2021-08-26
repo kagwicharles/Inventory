@@ -26,14 +26,13 @@
                 android:layout_marginTop="10dp"
                 android:text="Category"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/product_name" />
+                app:layout_constraintTop_toBottomOf="@+id/totalUnits" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/product_name"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +53,6 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +73,6 @@
                 android:id="@+id/product_attributes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/textView7"
                 tools:layout_editor_absoluteX="20dp" />
@@ -110,6 +107,43 @@
                 android:text="Product Name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/addUnitValue"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:tint="@color/dark_gray"
+                app:layout_constraintBottom_toBottomOf="@+id/totalUnits"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/totalUnits"
+                app:layout_constraintTop_toTopOf="@+id/totalUnits"
+                app:srcCompat="@drawable/ic_baseline_add_24" />
+
+            <TextView
+                android:id="@+id/totalUnits"
+                style="@style/NumberTextAppearance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="1"
+                app:layout_constraintEnd_toStartOf="@+id/addUnitValue"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/removeUnitValue"
+                app:layout_constraintTop_toBottomOf="@+id/product_name" />
+
+            <ImageView
+                android:id="@+id/removeUnitValue"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:tint="@color/dark_gray"
+                app:layout_constraintBottom_toBottomOf="@+id/totalUnits"
+                app:layout_constraintEnd_toStartOf="@+id/totalUnits"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/totalUnits"
+                app:srcCompat="@drawable/ic_baseline_remove_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

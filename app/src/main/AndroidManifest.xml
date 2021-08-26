@@ -34,6 +34,8 @@
 
         <activity android:name=".StockListingActivity"
             android:parentActivityName=".MainActivity"/>
+
+        <activity android:name=".ViewStockItemActivity"/>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.kagwisoftwares.inventory.adapters;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -11,21 +12,26 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kagwisoftwares.inventory.R;
+import com.kagwisoftwares.inventory.ViewStockItemActivity;
 import com.kagwisoftwares.inventory.entities.ProductItem;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class StockListingAdapter extends RecyclerView.Adapter<StockListingAdapter.ViewHolder> {
 
     private final List<ProductItem> stockItems;
+    DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView stockItem, stockTotal;
+        private final TextView stockItem, stockTotal, stockUpdated;
 
         public ViewHolder(View view) {
             super(view);
-            stockItem = (TextView) view.findViewById(R.id.subCategory);
-            stockTotal = (TextView) view.findViewById(R.id.stockTotal);
+            stockItem = view.findViewById(R.id.subCategory);
+            stockTotal = view.findViewById(R.id.stockTotal);
+            stockUpdated = view.findViewById(R.id.last_updated);
         }
 
         public TextView getStockItem() {
@@ -34,6 +40,10 @@ public class StockListingAdapter extends RecyclerView.Adapter<StockListingAdapte
 
         public TextView getStockTotal() {
             return stockTotal;
+        }
+
+        public TextView getStockUpdated() {
+            return stockUpdated;
         }
 
     }
@@ -54,7 +64,19 @@ public class StockListingAdapter extends RecyclerView.Adapter<StockListingAdapte
         int stockSize = stockItems.size();
         Log.d("STOCK SIZE ", String.valueOf(stockSize));
         viewHolder.getStockItem().setText(stockItems.get(position).getItem_name());
-        viewHolder.getStockTotal().setText("");
+        viewHolder.getStockTotal().setText(String.valueOf(stockItems.get(position).getItem_units()));
+        viewHolder.getStockUpdated().setText(df.format(stockItems.get(position).getDate()));
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ViewStockItemActivity.class);
+                intent.putExtra("ITEM_NAME", viewHolder.getStockItem().getText().toString());
+                intent.putExtra("ITEM_UPDATE", viewHolder.getStockUpdated().getText().toString());
+                intent.putExtra("ITEM_STOCK", viewHolder.getStockTotal().getText().toString());
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

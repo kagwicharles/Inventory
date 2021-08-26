@@ -1,6 +1,7 @@
 package com.kagwisoftwares.inventory;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -8,6 +9,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,17 +34,18 @@ public class AddProductItemActivity extends AppCompatActivity {
     private Button saveItem, addAttribute;
     private LinearLayout linearLayout;
     private TextInputEditText et_productName;
+    private ImageView addUnitValue, removeUnitValue;
+    private TextView txt_totalUnits;
 
     private MyViewModel myViewModel;
     private String category, productName;
-    private int productId;
+    private int productId, totalUnits;
     private ArrayList<ProductAttribute> productAttributes;
     private MyRepository myRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //new MyTransitions().animateFade(this);
         setContentView(R.layout.activity_add_product_item);
         getSupportActionBar().setTitle("New Shipment");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -53,6 +56,9 @@ public class AddProductItemActivity extends AppCompatActivity {
         categories = findViewById(R.id.categoryAutoComplete);
         linearLayout = findViewById(R.id.product_attributes);
         et_productName = findViewById(R.id.et_productName);
+        addUnitValue = findViewById(R.id.addUnitValue);
+        removeUnitValue = findViewById(R.id.removeUnitValue);
+        txt_totalUnits = findViewById(R.id.totalUnits);
 
         productAttributes = new ArrayList<>();
         myRepository = new MyRepository(getApplication());
@@ -74,6 +80,32 @@ public class AddProductItemActivity extends AppCompatActivity {
             }
         });
 
+        addUnitValue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                incrementUnitValue();
+            }
+        });
+
+        removeUnitValue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                decrementUnitValue();
+            }
+        });
+
+    }
+
+    void incrementUnitValue() {
+        totalUnits = Integer.parseInt(txt_totalUnits.getText().toString());
+        totalUnits++;
+        txt_totalUnits.setText(String.valueOf(totalUnits));
+    }
+
+    void decrementUnitValue() {
+        totalUnits = Integer.parseInt(txt_totalUnits.getText().toString());
+        totalUnits--;
+        txt_totalUnits.setText(String.valueOf(totalUnits));
     }
 
     void addDropDownItems() {
@@ -97,8 +129,6 @@ public class AddProductItemActivity extends AppCompatActivity {
 
     void addNewView() {
         View attributeView = getLayoutInflater().inflate(R.layout.row_add_product_item, null, false);
-//        TextInputEditText et_attributeName = (TextInputEditText) attributeView.findViewById(R.id.et_attributeName);
-//        TextInputEditText et_attributeProperty = (TextInputEditText) attributeView.findViewById(R.id.et_attributeProperty);
         ImageView close = attributeView.findViewById(R.id.remove_attribute);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +161,7 @@ public class AddProductItemActivity extends AppCompatActivity {
                             productItem.setItem_name(productName);
                             productItem.setCategoryId(itemId);
                             productItem.setDate(Calendar.getInstance().getTime());
+                            productItem.setItem_units(totalUnits);
                             myViewModel.insertProductItem(productItem);
                             insertProductAttributes(productName, productAttributes);
                             finish();
@@ -162,23 +193,14 @@ public class AddProductItemActivity extends AppCompatActivity {
 
             ProductAttribute productAttribute = new ProductAttribute();
 
-//            if (!attribute.equals("") || !property.equals("")) {
-//                productAttribute.setItemId(itemId);
-//                productAttribute.setAttrName(attribute);
-//                productAttribute.setAttrProperty(property);
-//                new MyRepository(this.getApplication()).insert(productAttribute);
-//            } else {
-//                valuesCorrect = false;
-//            }
-
-            if (!attribute.equals("") && !property.equals("")) {
-                productAttributes.add(productAttribute);
+            if (!attribute.equals("") && !property.equals("") && totalUnits > 1) {
                 productAttribute.setItemId(0);
                 productAttribute.setAttrName(attribute);
                 productAttribute.setAttrProperty(property);
             } else {
                 valuesCorrect = false;
             }
+            productAttributes.add(productAttribute);
         }
         return valuesCorrect;
     }

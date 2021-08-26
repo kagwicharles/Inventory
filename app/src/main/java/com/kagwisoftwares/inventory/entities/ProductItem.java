@@ -24,6 +24,10 @@ public class ProductItem {
     private String item_name;
 
     @NonNull
+    @ColumnInfo(name = "item_units")
+    private int item_units;
+
+    @NonNull
     @ColumnInfo(name = "date_created")
     private Date date;
 
@@ -45,10 +49,20 @@ public class ProductItem {
     public void setItem_image(byte[] item_image) {
         this.item_image = item_image;
     }
+
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
 
+    public void setItem_units(@NonNull int item_units) {
+        this.item_units = item_units;
+    }
+
+    @NonNull
+    public int getItem_units() {
+        return item_units;
+    }
+    
     public int getCategoryId() {
         return categoryId;
     }

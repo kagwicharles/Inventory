@@ -11,6 +11,7 @@ import com.kagwisoftwares.inventory.entities.ProductAttribute;
 import com.kagwisoftwares.inventory.entities.ProductItem;
 import com.kagwisoftwares.inventory.models.StockCategoriesModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @androidx.room.Dao
@@ -44,9 +45,6 @@ public interface Dao {
     @Query("SELECT * FROM category")
     LiveData<List<StockCategoriesModel>> getAllStock();
 
-    @Query("SELECT * FROM product_attribute WHERE id=:id")
-    LiveData<List<ProductAttribute>> getProductAttributesById(int id);
-
     @Query("SELECT id FROM category WHERE category_name=:name")
     int getCategory(String name);
 
@@ -55,4 +53,16 @@ public interface Dao {
 
     @Query("SELECT id FROM product_item ORDER BY id DESC LIMIT 1")
     int getLastProductId();
+
+    @Query("SELECT id FROM category ORDER BY id DESC LIMIT 1")
+    int getLastCategoryId();
+
+    @Query("SELECT SUM(item_units) as sum_score FROM product_item;")
+    int getTotalStockForShop();
+
+    @Query("SELECT SUM(item_units) as sum_score FROM product_item WHERE categoryId=:categoryId;")
+    int getTotalStockByCategory(int categoryId);
+
+    @Query("SELECT * FROM product_attribute WHERE itemId=:itemId;")
+    List<ProductAttribute> getAllAttributesById(int itemId);
 }

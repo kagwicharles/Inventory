@@ -38,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
     private MyViewModel myViewModel;
     private ProductsAdapter productsAdapter;
     private ArrayList<ItemModel> items;
-    private int allStock;
+
+    private final static int PRODUCTS_CHANGE = 0;
+    private final static int CATEGORIES_CHANGE = 1;
 
     private FloatingActionsMenu addFab;
     private FloatingActionButton addPhone, addCategory;
@@ -93,6 +95,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         myViewModel = new ViewModelProvider(this).get(MyViewModel.class);
+
+        myViewModel.getAllProducts().observe(this, new Observer<List<ProductItem>>() {
+            @Override
+            public void onChanged(List<ProductItem> productItems) {
+                setDashItems();
+            }
+        });
+
         myViewModel.getAllCategories().observe(this, new Observer<List<Category>>() {
             @Override
             public void onChanged(List<Category> categories) {
@@ -101,7 +111,8 @@ public class MainActivity extends AppCompatActivity {
                 productsRecycler.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
                 productsRecycler.setAdapter(productsAdapter);
 
-                getDashItems(noOfProducts, setDashItems());
+                setDashItems();
+
                 if (noOfProducts == 0) {
                     emptyList.setVisibility(View.VISIBLE);
                 } else {
@@ -112,30 +123,35 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getDashItems(int noProducts, int allStock) {
-        items = new ArrayList<>();
-        itemsRecycler.setLayoutManager(new GridLayoutManager(this, 2));
-        itemsRecycler.addItemDecoration(new GridSpacingItemDecoration(2, 20, false));
-        items.add(new ItemModel("Total Products", noProducts, 0.004, R.drawable.ic_increase_green));
-        items.add(new ItemModel("Stock In Hand", allStock, 0.0290, R.drawable.ic_increase_red));
-        itemsRecycler.setAdapter(new DashAdapter(items));
-    }
+//    private void getDashItems(int noProducts, int allStock) {
+//        items = new ArrayList<>();
+//        itemsRecycler.setLayoutManager(new GridLayoutManager(this, 2));
+//        itemsRecycler.addItemDecoration(new GridSpacingItemDecoration(2, 20, false));
+//        items.add(new ItemModel("Total Products", noProducts, 0.004, R.drawable.ic_increase_green));
+//        items.add(new ItemModel("Stock In Hand", allStock, 0.0290, R.drawable.ic_increase_red));
+//        itemsRecycler.setAdapter(new DashAdapter(items));
+//    }
 
-    int setDashItems() {
+    void setDashItems() {
         Thread thread = new Thread() {
             @Override
             public void run() {
-                int allStockNo = Inventorydb.getDatabase(getApplicationContext()).dao().getLastProductId();
+                int allCategories = Inventorydb.getDatabase(getApplicationContext()).dao().getLastCategoryId();
+                int allStockNo = Inventorydb.getDatabase(getApplicationContext()).dao().getTotalStockForShop();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        allStock = allStockNo;
+                        items = new ArrayList<>();
+                        itemsRecycler.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+                        itemsRecycler.addItemDecoration(new GridSpacingItemDecoration(2, 20, false));
+                        items.add(new ItemModel("Total Products", allCategories, 0.004, R.drawable.ic_increase_green));
+                        items.add(new ItemModel("Stock In Hand", allStockNo, 0.0290, R.drawable.ic_increase_red));
+                        itemsRecycler.setAdapter(new DashAdapter(items));
                     }
                 });
             }
         };
         thread.start();
-        return allStock;
     }
 
 }

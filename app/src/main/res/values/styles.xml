@@ -4,7 +4,7 @@
     <style name="NormalTextAppearance" parent="@android:style/TextAppearance">
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">0.7</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">@font/roboto_medium</item>
     </style>
 

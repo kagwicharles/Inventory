@@ -29,7 +29,6 @@
         app:layout_constraintTop_toBottomOf="@+id/itemsRecycler" />
 
     <ImageView
-        android:id="@+id/imageView"
         android:layout_width="60dp"
         android:layout_height="30dp"
         android:layout_marginEnd="20dp"

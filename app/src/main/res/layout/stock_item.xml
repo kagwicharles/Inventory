@@ -19,49 +19,44 @@
 
     <TextView
         android:id="@+id/stockTotal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="132142"
-        app:layout_constraintBottom_toBottomOf="@+id/textView9"
-        app:layout_constraintStart_toEndOf="@+id/textView9"
-        app:layout_constraintTop_toTopOf="@+id/textView9" />
-
-    <TextView
-        android:id="@+id/textView9"
-        style="@style/SubtitleTextAppearance"
+        style="@style/NumberTextAppearance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        android:text="Current Stock"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="132142"
+        app:layout_constraintStart_toStartOf="@+id/subCategory"
         app:layout_constraintTop_toBottomOf="@+id/subCategory" />
 
     <TextView
-        android:id="@+id/sellItem"
+        style="@style/SubtitleTextAppearance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/textview_sell_bg"
-        android:text="Sell"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/addItem"
-        app:layout_constraintTop_toBottomOf="@+id/stockTotal"
-        android:elevation="4dp"/>
+        android:layout_marginStart="5dp"
+        android:text="In Stock"
+        app:layout_constraintBottom_toBottomOf="@+id/stockTotal"
+        app:layout_constraintStart_toEndOf="@+id/stockTotal"
+        app:layout_constraintTop_toTopOf="@+id/stockTotal" />
 
     <TextView
-        android:id="@+id/addItem"
+        android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/texview_edit_bg"
-        android:text="Edit"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/sellItem"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/sellItem"
-        android:elevation="4dp"/>
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Updated"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stockTotal" />
+
+    <TextView
+        android:id="@+id/last_updated"
+        style="@style/SubtitleTextAppearance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/textView11"
+        app:layout_constraintStart_toEndOf="@+id/textView11"
+        app:layout_constraintTop_toTopOf="@+id/textView11" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

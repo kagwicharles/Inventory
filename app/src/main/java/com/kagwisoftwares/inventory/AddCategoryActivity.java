@@ -32,7 +32,6 @@ public class AddCategoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //new MyTransitions().animateFade(this);
         setContentView(R.layout.activity_add_product);
         getSupportActionBar().setTitle("Create Product");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -127,9 +126,15 @@ public class AddCategoryActivity extends AppCompatActivity {
             return;
         }
         category.setCategory_name(categoryName);
-        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-        bitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
-        category.setCategory_image(convertToByteArray(bitmap));
+
+        try {
+            Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+            bitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
+            category.setCategory_image(convertToByteArray(bitmap));
+        } catch (ClassCastException e) {
+            Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show();
+            return;
+        }
         new MyViewModel(getApplication()).insertCategory(category);
         clear();
     }

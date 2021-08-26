@@ -1,26 +1,23 @@
 package com.kagwisoftwares.inventory.adapters;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.internal.ViewOverlayImpl;
-import com.kagwisoftwares.inventory.MainActivity;
 import com.kagwisoftwares.inventory.R;
 import com.kagwisoftwares.inventory.StockListingActivity;
 import com.kagwisoftwares.inventory.db.Inventorydb;
 import com.kagwisoftwares.inventory.entities.Category;
+import com.kagwisoftwares.inventory.utils.MyThread;
 
 import java.util.List;
 
@@ -28,6 +25,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
 
     private List<Category> categories;
     private Activity activity;
+    private MyThread myThread;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView categoryName, categoryTotal;
@@ -74,10 +72,13 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+        myThread = new MyThread(activity, 2);
+        int stockSize = myThread.getReturnValue();
+        Log.d("RETURN VALUE", String.valueOf(stockSize));
         viewHolder.getCategoryName().setText(categories.get(position).getCategory_name());
         viewHolder.getCategoryIcon().setImageBitmap(setImage(categories.get(position).getCategory_image()));
         viewHolder.getArrowRight().setImageResource(R.drawable.ic_line_graph);
-        viewHolder.getCategoryTotal().setText(String.valueOf(100));
+        viewHolder.getCategoryTotal().setText(String.valueOf(stockSize));
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +87,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
                     @Override
                     public void run() {
                         int itemId = Inventorydb.
-                                getDatabase(view.getContext().getApplicationContext()).dao().getCategory(viewHolder.getCategoryName().getText().toString());
+                                getDatabase(view.getContext().getApplicationContext()).
+                                dao().getCategory(viewHolder.getCategoryName().getText().toString());
                         Intent intent = new Intent(view.getContext(), StockListingActivity.class);
                         intent.putExtra("CATEGORY_ID", itemId);
                         view.getContext().startActivity(intent);
@@ -95,10 +97,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
                 thread.start();
             }
         });
-    }
-
-    void getItemId() {
-
     }
 
     @Override
