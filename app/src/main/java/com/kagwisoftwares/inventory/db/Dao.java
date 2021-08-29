@@ -35,7 +35,7 @@ public interface Dao {
     void insertCategory(Category category);
 
     @Query("DELETE FROM category WHERE id=:categoryId")
-    void deleteAllCategory(int categoryId);
+    void deleteCategoryById(int categoryId);
 
     @Query("DELETE FROM product_item WHERE id=:productId")
     void deleteProductById(int productId);
@@ -73,4 +73,10 @@ public interface Dao {
 
     @Query("UPDATE product_item SET item_units = :units WHERE id=:itemId;")
     int updateStock( int units, int itemId);
+
+    @Query("SELECT item_image FROM product_item WHERE id=:itemId")
+    byte[] getProductImageById(int itemId);
+
+    @Query("SELECT COUNT(*) FROM category")
+    int getTotalCategories();
 }

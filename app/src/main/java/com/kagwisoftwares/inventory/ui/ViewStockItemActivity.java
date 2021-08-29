@@ -1,8 +1,11 @@
 package com.kagwisoftwares.inventory.ui;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +29,7 @@ public class ViewStockItemActivity extends AppCompatActivity {
     private AttributesAdapter attributesAdapter;
     private RecyclerView attributesRecycler;
     private TextView stock;
+    private ImageView productImage;
 
     private String itemName, itemLastUpdated, itemStockSize;
 
@@ -44,6 +48,8 @@ public class ViewStockItemActivity extends AppCompatActivity {
 
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsible_toolbar_product);
         collapsingToolbarLayout.setTitle(itemName);
+
+        productImage = findViewById(R.id.image_product_config_item_photo);
 
         TextView updated = findViewById(R.id.tv_updated);
         updated.setText(itemLastUpdated);
@@ -102,6 +108,8 @@ public class ViewStockItemActivity extends AppCompatActivity {
                 int stockSize = Inventorydb.
                         getDatabase(getApplicationContext()).
                         dao().getTotalUnitsById(productId);
+                byte[] itemImage = Inventorydb.getDatabase(getApplicationContext()).
+                        dao().getProductImageById(productId);
                 productAttributes = Inventorydb.
                         getDatabase(getApplicationContext()).
                         dao().getAllAttributesById(productId);
@@ -115,11 +123,22 @@ public class ViewStockItemActivity extends AppCompatActivity {
                         attributesRecycler.addItemDecoration(new DividerItemDecoration(getApplicationContext(), linearLayoutManager.getOrientation()));
                         attributesRecycler.setAdapter(attributesAdapter);
                         stock.setText(String.valueOf(stockSize));
+                        productImage.setImageBitmap(setImage(itemImage));
                     }
                 });
             }
         };
         thread.start();
+    }
+
+    public Bitmap setImage(byte[] byteArray) {
+        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        return bitmap;
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
 }

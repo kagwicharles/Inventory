@@ -4,7 +4,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaParser;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -23,6 +25,9 @@ import com.kagwisoftwares.inventory.db.entities.Category;
 import com.kagwisoftwares.inventory.db.MyViewModel;
 
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class AddCategoryActivity extends AppCompatActivity {
 
@@ -39,7 +44,7 @@ public class AddCategoryActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        imageView = (ImageView) findViewById(R.id.imgbrandLogo);
+        imageView = (ImageView) findViewById(R.id.imgproductLogo);
         textInputLayout = (TextInputLayout) findViewById(R.id.inputLayoutBrand);
         editText = (EditText) findViewById(R.id.etbrandName);
 
@@ -129,7 +134,6 @@ public class AddCategoryActivity extends AppCompatActivity {
             return;
         }
         category.setCategory_name(categoryName);
-
         try {
             Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
             bitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
@@ -138,6 +142,7 @@ public class AddCategoryActivity extends AppCompatActivity {
             Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show();
             return;
         }
+        category.setDate_created(getDate());
         new MyViewModel(getApplication()).insertCategory(category);
         clear();
     }
@@ -154,5 +159,8 @@ public class AddCategoryActivity extends AppCompatActivity {
         Toast.makeText(this, "Brand added", Toast.LENGTH_SHORT).show();
     }
 
+    int getDate() {
+        return (int) (new Date().getTime() / 1000);
+    }
 }
 

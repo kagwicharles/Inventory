@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,13 +19,16 @@ import com.kagwisoftwares.inventory.db.entities.ProductItem;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class StockListingAdapter extends RecyclerView.Adapter<StockListingAdapter.ViewHolder> {
+public class StockListingAdapter extends RecyclerView.Adapter<StockListingAdapter.ViewHolder> implements Filterable {
 
     private final List<ProductItem> stockItems;
+    private final List<ProductItem> stockItemsFull;
+
     private DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
     private ExecutorService service;
 
@@ -53,6 +58,7 @@ public class StockListingAdapter extends RecyclerView.Adapter<StockListingAdapte
 
     public StockListingAdapter(List<ProductItem> stockItems) {
         this.stockItems = stockItems;
+        stockItemsFull = new ArrayList<>(stockItems);
         service = Executors.newFixedThreadPool(3);
     }
 
@@ -91,4 +97,34 @@ public class StockListingAdapter extends RecyclerView.Adapter<StockListingAdapte
     public Bitmap setImage(byte[] byteArray) {
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
     }
+
+    @Override
+    public Filter getFilter() {
+        return productsFilter;
+    }
+    private Filter productsFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<ProductItem> filteredList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(stockItemsFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (ProductItem item : stockItemsFull) {
+                    if (item.getItem_name().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            stockItems.clear();
+            stockItems.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 }

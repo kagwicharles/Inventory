@@ -53,12 +53,11 @@
         app:layout_constraintTop_toTopOf="@+id/textView2" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/deleteProduct"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginEnd="5dp"
         android:padding="10dp"
-        android:tint="#bf2f1f"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

@@ -65,7 +65,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/inputLayoutBrand" />
 
             <ImageView
-                android:id="@+id/imgbrandLogo"
+                android:id="@+id/imgproductLogo"
                 android:layout_width="0dp"
                 android:layout_height="150dp"
                 android:layout_marginStart="20dp"
@@ -90,7 +90,7 @@
                 android:textColor="@color/black"
                 app:backgroundTint="#ffffff"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imgbrandLogo" />
+                app:layout_constraintTop_toBottomOf="@+id/imgproductLogo" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

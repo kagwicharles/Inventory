@@ -1,5 +1,6 @@
 package com.kagwisoftwares.inventory.ui;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
@@ -9,29 +10,39 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ActivityOptions;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.kagwisoftwares.inventory.R;
 import com.kagwisoftwares.inventory.adapters.DashAdapter;
 import com.kagwisoftwares.inventory.adapters.ProductsAdapter;
-import com.kagwisoftwares.inventory.db.Inventorydb;
 import com.kagwisoftwares.inventory.db.entities.Category;
+import com.kagwisoftwares.inventory.utils.AuthenticateApp;
 import com.kagwisoftwares.inventory.utils.GridSpacingItemDecoration;
 import com.kagwisoftwares.inventory.db.entities.ProductItem;
 import com.kagwisoftwares.inventory.models.ItemModel;
 import com.kagwisoftwares.inventory.db.MyViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.kagwisoftwares.inventory.utils.ThreadAllCategories;
+import com.kagwisoftwares.inventory.utils.ThreadAllStock;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,9 +50,21 @@ public class MainActivity extends AppCompatActivity {
     private MyViewModel myViewModel;
     private ProductsAdapter productsAdapter;
     private ArrayList<ItemModel> items;
+    private List<Category> categoriesList;
 
     private FloatingActionsMenu addFab;
     private FloatingActionButton addPhone, addCategory;
+
+    private ExecutorService service;
+
+    private final String[] options = new String[]{"Alphabetical - Ascending", "Alphabetical - Descending", "Oldest first", "Newest first"};
+    private static final int ASCENDING = 0;
+    private static final int DESCENDING = 1;
+    private static final int OLDEST_FIRST = 2;
+    private static final int NEWEST_FIRST = 3;
+    private static int sort_choice = 2;
+
+    private AuthenticateApp authenticateApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +74,17 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle("Dashboard");
         setSupportActionBar(toolbar);
 
+        authenticateApp = new AuthenticateApp(this);
+        checkAuthentication();
+
+        categoriesList = new ArrayList<>();
+
         productsRecycler = (RecyclerView) findViewById(R.id.productlistRecycler);
+        productsRecycler.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
+
         itemsRecycler = (RecyclerView) findViewById(R.id.itemsRecycler);
+        itemsRecycler.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+        itemsRecycler.addItemDecoration(new GridSpacingItemDecoration(2, 20, false));
 
         addFab = (FloatingActionsMenu) findViewById(R.id.addFab);
         addPhone = (FloatingActionButton) findViewById(R.id.addPhone);
@@ -94,8 +126,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        myViewModel = new ViewModelProvider(this).get(MyViewModel.class);
+        service = Executors.newFixedThreadPool(3);
 
+        myViewModel = new ViewModelProvider(this).get(MyViewModel.class);
         myViewModel.getAllProducts().observe(this, new Observer<List<ProductItem>>() {
             @Override
             public void onChanged(List<ProductItem> productItems) {
@@ -107,8 +140,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Category> categories) {
                 int noOfProducts = categories.size();
+                categoriesList = categories;
                 productsAdapter = new ProductsAdapter(categories, MainActivity.this);
-                productsRecycler.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));
                 productsRecycler.setAdapter(productsAdapter);
 
                 setDashItems();
@@ -121,34 +154,92 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("CATEGORIES SIZE: ", String.valueOf(noOfProducts));
             }
         });
+
+        ImageView sort = findViewById(R.id.sortItems);
+        sort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSortConfirmationDialog();
+            }
+        });
     }
 
     void setDashItems() {
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                int allCategories = Inventorydb.getDatabase(getApplicationContext()).dao().getLastCategoryId();
-                int allStockNo = Inventorydb.getDatabase(getApplicationContext()).dao().getTotalStockForShop();
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        items = new ArrayList<>();
-                        itemsRecycler.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
-                        itemsRecycler.addItemDecoration(new GridSpacingItemDecoration(2, 20, false));
-                        items.add(new ItemModel("Total Products", allCategories));
-                        items.add(new ItemModel("Stock In Hand", allStockNo));
-                        itemsRecycler.setAdapter(new DashAdapter(items));
-                    }
-                });
-            }
-        };
-        thread.start();
+        Future<String> categoriesTotal = service.submit(new ThreadAllCategories(getApplicationContext()));
+        Future<String> totalStock = service.submit(new ThreadAllStock(getApplicationContext()));
+        items = new ArrayList<>();
+        try {
+            items.add(new ItemModel("Total Products", Integer.parseInt(categoriesTotal.get())));
+            items.add(new ItemModel("Stock In Hand", Integer.parseInt(totalStock.get())));
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        itemsRecycler.setAdapter(new DashAdapter(items));
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.dash_menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.logout)
+            authenticateApp.clearCredentials();
+        return true;
+    }
+
+
+    private void showSortConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.RadioDialogTheme);
+        builder.setTitle("Sort Items");
+        builder.setSingleChoiceItems(options, sort_choice, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sortAllItems(which);
+            }
+        });
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void sortAllItems(int choice) {
+        switch (choice) {
+            case ASCENDING:
+                Collections.sort(categoriesList, Category.CategoryNameAZComparator);
+                productsAdapter.notifyDataSetChanged();
+                break;
+            case DESCENDING:
+                Collections.sort(categoriesList, Category.CategoryNameZAComparator);
+                productsAdapter.notifyDataSetChanged();
+                break;
+            case OLDEST_FIRST:
+                Collections.sort(categoriesList, Category.CategoryDateAscendingComparator);
+                productsAdapter.notifyDataSetChanged();
+                break;
+            case NEWEST_FIRST:
+                Collections.sort(categoriesList, Category.CategoryDateDescendingComparator);
+                productsAdapter.notifyDataSetChanged();
+                break;
+
+        }
+    }
+
+    void checkAuthentication() {
+        if (!authenticateApp.readCredentials()){
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
     }
 }

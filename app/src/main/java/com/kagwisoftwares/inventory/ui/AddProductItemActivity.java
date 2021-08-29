@@ -1,6 +1,15 @@
 package com.kagwisoftwares.inventory.ui;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -11,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
@@ -25,6 +35,7 @@ import com.kagwisoftwares.inventory.db.entities.ProductItem;
 import com.kagwisoftwares.inventory.db.MyRepository;
 import com.kagwisoftwares.inventory.db.MyViewModel;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -35,7 +46,7 @@ public class AddProductItemActivity extends AppCompatActivity {
     private Button saveItem, addAttribute;
     private LinearLayout linearLayout;
     private TextInputEditText et_productName;
-    private ImageView addUnitValue, removeUnitValue;
+    private ImageView addUnitValue, removeUnitValue, productImage;
     private TextView txt_totalUnits;
 
     private MyViewModel myViewModel;
@@ -62,6 +73,7 @@ public class AddProductItemActivity extends AppCompatActivity {
         addUnitValue = findViewById(R.id.addUnitValue);
         removeUnitValue = findViewById(R.id.removeUnitValue);
         txt_totalUnits = findViewById(R.id.totalUnits);
+        productImage = findViewById(R.id.imgproductLogo);
 
         productAttributes = new ArrayList<>();
         myRepository = new MyRepository(getApplication());
@@ -94,6 +106,13 @@ public class AddProductItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 decrementUnitValue();
+            }
+        });
+
+        productImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchUploadAlert();
             }
         });
 
@@ -165,6 +184,7 @@ public class AddProductItemActivity extends AppCompatActivity {
                             productItem.setCategoryId(itemId);
                             productItem.setDate(Calendar.getInstance().getTime());
                             productItem.setItem_units(totalUnits);
+                            productItem.setItem_image(setProductImage());
                             myViewModel.insertProductItem(productItem);
                             insertProductAttributes(productName, productAttributes);
                             finish();
@@ -196,7 +216,7 @@ public class AddProductItemActivity extends AppCompatActivity {
 
             ProductAttribute productAttribute = new ProductAttribute();
 
-            if (!attribute.equals("") && !property.equals("") && totalUnits > 1) {
+            if (!attribute.equals("") && !property.equals("") && totalUnits > 0) {
                 productAttribute.setItemId(0);
                 productAttribute.setAttrName(attribute);
                 productAttribute.setAttrProperty(property);
@@ -224,5 +244,82 @@ public class AddProductItemActivity extends AppCompatActivity {
             }
         };
         thread.start();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_CANCELED) {
+            switch (requestCode) {
+                case 0:
+                    if (resultCode == RESULT_OK && data != null) {
+                        Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+                        productImage.setImageBitmap(selectedImage);
+                    }
+                    break;
+
+                case 1:
+                    if (resultCode == RESULT_OK && data != null) {
+                        Uri selectedImage = data.getData();
+                        if (selectedImage != null) {
+                            productImage.setImageURI(selectedImage);
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+
+    void launchUploadAlert() {
+        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(AddProductItemActivity.this);
+        builder.setTitle("Choose Logo");
+
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (options[item].equals("Take Photo")) {
+                    Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(takePicture, 0);
+
+                } else if (options[item].equals("Choose from Gallery")) {
+                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(pickPhoto, 1);
+
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    byte[] setProductImage() {
+        int imageWidth = 100;
+        int imageHeight = 100;
+        byte[] image = null;
+        try {
+            Bitmap bitmap = ((BitmapDrawable) productImage.getDrawable()).getBitmap();
+            bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, imageHeight, true);
+            image = convertToByteArray(bitmap);
+        } catch (ClassCastException e) {
+            Resources res = getResources();
+            Drawable defaultImage = res.getDrawable(R.drawable.ic_upload);
+            Bitmap bitmap = Bitmap.createBitmap(defaultImage.getIntrinsicWidth(), defaultImage.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            defaultImage.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            defaultImage.draw(canvas);
+            image = convertToByteArray(bitmap);
+        }
+        return image;
+    }
+
+    byte[] convertToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
     }
 }

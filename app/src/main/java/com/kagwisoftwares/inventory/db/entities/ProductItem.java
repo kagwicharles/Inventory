@@ -3,11 +3,16 @@ package com.kagwisoftwares.inventory.db.entities;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
-@Entity(tableName = "product_item")
+@Entity(tableName = "product_item", foreignKeys = {@ForeignKey(entity = Category.class,
+        parentColumns = "id",
+        childColumns = "categoryId",
+        onDelete = ForeignKey.CASCADE)
+})
 public class ProductItem {
 
     @PrimaryKey(autoGenerate = true)
