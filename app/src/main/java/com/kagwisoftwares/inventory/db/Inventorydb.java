@@ -7,11 +7,10 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.kagwisoftwares.inventory.Dao.Dao;
 import com.kagwisoftwares.inventory.converters.Converters;
-import com.kagwisoftwares.inventory.entities.Category;
-import com.kagwisoftwares.inventory.entities.ProductAttribute;
-import com.kagwisoftwares.inventory.entities.ProductItem;
+import com.kagwisoftwares.inventory.db.entities.Category;
+import com.kagwisoftwares.inventory.db.entities.ProductAttribute;
+import com.kagwisoftwares.inventory.db.entities.ProductItem;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

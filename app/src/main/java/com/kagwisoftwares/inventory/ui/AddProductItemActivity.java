@@ -1,7 +1,6 @@
-package com.kagwisoftwares.inventory;
+package com.kagwisoftwares.inventory.ui;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -13,16 +12,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.kagwisoftwares.inventory.R;
 import com.kagwisoftwares.inventory.db.Inventorydb;
-import com.kagwisoftwares.inventory.entities.Category;
-import com.kagwisoftwares.inventory.entities.ProductAttribute;
-import com.kagwisoftwares.inventory.entities.ProductItem;
-import com.kagwisoftwares.inventory.repositories.MyRepository;
-import com.kagwisoftwares.inventory.viewmodels.MyViewModel;
+import com.kagwisoftwares.inventory.db.entities.Category;
+import com.kagwisoftwares.inventory.db.entities.ProductAttribute;
+import com.kagwisoftwares.inventory.db.entities.ProductItem;
+import com.kagwisoftwares.inventory.db.MyRepository;
+import com.kagwisoftwares.inventory.db.MyViewModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,7 +48,9 @@ public class AddProductItemActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product_item);
-        getSupportActionBar().setTitle("New Shipment");
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("New Item");
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         myViewModel = new ViewModelProvider(this).get(MyViewModel.class);

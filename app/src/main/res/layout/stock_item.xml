@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="5dp">
+    android:paddingBottom="5dp"
+    android:background="?android:attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/subCategory"
@@ -29,6 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/subCategory" />
 
     <TextView
+        android:id="@+id/textView15"
         style="@style/SubtitleTextAppearance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,21 +44,21 @@
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:text="Updated"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stockTotal" />
+        android:layout_marginEnd="2dp"
+        android:text="Modified"
+        app:layout_constraintBottom_toBottomOf="@+id/textView15"
+        app:layout_constraintEnd_toStartOf="@+id/last_updated"
+        app:layout_constraintTop_toTopOf="@+id/textView15" />
 
     <TextView
         android:id="@+id/last_updated"
         style="@style/SubtitleTextAppearance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="@+id/textView11"
-        app:layout_constraintStart_toEndOf="@+id/textView11"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView11" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

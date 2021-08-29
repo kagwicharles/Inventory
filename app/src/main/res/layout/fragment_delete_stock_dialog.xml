@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:minWidth="350dp"
-    android:minHeight="200dp"
+    android:minHeight="100dp"
     android:paddingStart="10dp"
     android:paddingEnd="10dp">
 
@@ -16,45 +16,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Sell goods"
-        app:layout_constraintBottom_toTopOf="@+id/edt_stock_sold"
+        android:text="Delete Item"
+        app:layout_constraintBottom_toTopOf="@+id/edt_stock_received"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12">
-
-        <TextView
-            android:id="@+id/textView16"
-            style="@style/SmallTitleTextAppearance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="1dp"
-            android:text="Quantity" />
-
-        <EditText
-            android:id="@+id/edt_stock_sold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:ems="10"
-            android:inputType="number" />
-
-        <TextView
-            android:id="@+id/error"
-            style="@style/SubtitleTextAppearance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="error"
-            android:textColor="#bf2f1f" />
-    </LinearLayout>
 
     <TextView
         android:id="@+id/okBtn"
@@ -67,7 +32,7 @@
         android:text="Ok"
         android:textColor="#2b6734"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <TextView
         android:id="@+id/cancelBtn"

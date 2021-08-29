@@ -1,32 +1,27 @@
 package com.kagwisoftwares.inventory.utils;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.kagwisoftwares.inventory.db.Inventorydb;
 
-public class MyThread extends Thread{
+import java.util.concurrent.Callable;
 
-    private Context context;
-    private int param, returnValue;
+public class MyThread implements Callable<String> {
 
-    public void setReturnValue(int value) {
-        returnValue = value;
-    }
-    public int getReturnValue() {
-        return returnValue;
-    }
+    private final Context context;
+    private final String item;
 
-    public MyThread(Context context, int param) {
+    public MyThread(String item, Context context) {
         this.context = context;
-        this.param = param;
-        super.start();
+        this.item = item;
     }
 
     @Override
-    public void run() {
-        returnValue = Inventorydb.
-                getDatabase(context).dao().getTotalStockByCategory(param);
-        setReturnValue(returnValue);
+    public String call() {
+        int itemId = Inventorydb.
+                getDatabase(context.getApplicationContext()).dao().getCategory(item);
+        int total = Inventorydb.
+                getDatabase(context.getApplicationContext()).dao().getTotalStockByCategory(itemId);
+        return String.valueOf(total);
     }
 }

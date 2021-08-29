@@ -3,8 +3,8 @@ package com.kagwisoftwares.inventory.models;
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
-import com.kagwisoftwares.inventory.entities.Category;
-import com.kagwisoftwares.inventory.entities.ProductItem;
+import com.kagwisoftwares.inventory.db.entities.Category;
+import com.kagwisoftwares.inventory.db.entities.ProductItem;
 
 import java.util.List;
 

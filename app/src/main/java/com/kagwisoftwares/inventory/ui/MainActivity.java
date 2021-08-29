@@ -1,7 +1,7 @@
-package com.kagwisoftwares.inventory;
+package com.kagwisoftwares.inventory.ui;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -13,18 +13,19 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.kagwisoftwares.inventory.R;
 import com.kagwisoftwares.inventory.adapters.DashAdapter;
 import com.kagwisoftwares.inventory.adapters.ProductsAdapter;
 import com.kagwisoftwares.inventory.db.Inventorydb;
-import com.kagwisoftwares.inventory.entities.Category;
-import com.kagwisoftwares.inventory.decorators.GridSpacingItemDecoration;
-import com.kagwisoftwares.inventory.entities.ProductItem;
+import com.kagwisoftwares.inventory.db.entities.Category;
+import com.kagwisoftwares.inventory.utils.GridSpacingItemDecoration;
+import com.kagwisoftwares.inventory.db.entities.ProductItem;
 import com.kagwisoftwares.inventory.models.ItemModel;
-import com.kagwisoftwares.inventory.repositories.MyRepository;
-import com.kagwisoftwares.inventory.viewmodels.MyViewModel;
+import com.kagwisoftwares.inventory.db.MyViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private ProductsAdapter productsAdapter;
     private ArrayList<ItemModel> items;
 
-    private final static int PRODUCTS_CHANGE = 0;
-    private final static int CATEGORIES_CHANGE = 1;
-
     private FloatingActionsMenu addFab;
     private FloatingActionButton addPhone, addCategory;
 
@@ -49,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().setTitle("Dashboard");
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Dashboard");
+        setSupportActionBar(toolbar);
 
         productsRecycler = (RecyclerView) findViewById(R.id.productlistRecycler);
         itemsRecycler = (RecyclerView) findViewById(R.id.itemsRecycler);
@@ -123,29 +123,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    private void getDashItems(int noProducts, int allStock) {
-//        items = new ArrayList<>();
-//        itemsRecycler.setLayoutManager(new GridLayoutManager(this, 2));
-//        itemsRecycler.addItemDecoration(new GridSpacingItemDecoration(2, 20, false));
-//        items.add(new ItemModel("Total Products", noProducts, 0.004, R.drawable.ic_increase_green));
-//        items.add(new ItemModel("Stock In Hand", allStock, 0.0290, R.drawable.ic_increase_red));
-//        itemsRecycler.setAdapter(new DashAdapter(items));
-//    }
-
     void setDashItems() {
         Thread thread = new Thread() {
             @Override
             public void run() {
                 int allCategories = Inventorydb.getDatabase(getApplicationContext()).dao().getLastCategoryId();
                 int allStockNo = Inventorydb.getDatabase(getApplicationContext()).dao().getTotalStockForShop();
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         items = new ArrayList<>();
                         itemsRecycler.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
                         itemsRecycler.addItemDecoration(new GridSpacingItemDecoration(2, 20, false));
-                        items.add(new ItemModel("Total Products", allCategories, 0.004, R.drawable.ic_increase_green));
-                        items.add(new ItemModel("Stock In Hand", allStockNo, 0.0290, R.drawable.ic_increase_red));
+                        items.add(new ItemModel("Total Products", allCategories));
+                        items.add(new ItemModel("Stock In Hand", allStockNo));
                         itemsRecycler.setAdapter(new DashAdapter(items));
                     }
                 });
@@ -154,4 +146,9 @@ public class MainActivity extends AppCompatActivity {
         thread.start();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.dash_menu, menu);
+        return true;
+    }
 }

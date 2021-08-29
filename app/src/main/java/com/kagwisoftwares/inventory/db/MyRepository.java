@@ -1,14 +1,12 @@
-package com.kagwisoftwares.inventory.repositories;
+package com.kagwisoftwares.inventory.db;
 
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
-import com.kagwisoftwares.inventory.Dao.Dao;
-import com.kagwisoftwares.inventory.db.Inventorydb;
-import com.kagwisoftwares.inventory.entities.Category;
-import com.kagwisoftwares.inventory.entities.ProductAttribute;
-import com.kagwisoftwares.inventory.entities.ProductItem;
+import com.kagwisoftwares.inventory.db.entities.Category;
+import com.kagwisoftwares.inventory.db.entities.ProductAttribute;
+import com.kagwisoftwares.inventory.db.entities.ProductItem;
 import com.kagwisoftwares.inventory.models.StockCategoriesModel;
 
 import java.util.List;
@@ -21,6 +19,7 @@ public class MyRepository {
     private LiveData<List<ProductItem>> allProductItems;
     private LiveData<List<Category>> allCategories;
     private LiveData<List<StockCategoriesModel>> allStock;
+    private LiveData<List<ProductItem>> allProductsById;
 
     public MyRepository(Application application) {
         Inventorydb db = Inventorydb.getDatabase(application);
@@ -28,6 +27,12 @@ public class MyRepository {
         allProductItems = dao.getProductItems();
         allCategories = dao.getCategories();
         allStock = dao.getAllStock();
+    }
+
+    public MyRepository(Application application, int productId) {
+        Inventorydb db = Inventorydb.getDatabase(application);
+        dao = db.dao();
+        allProductsById = dao.getProductItemsById(productId);
     }
 
     public LiveData<List<ProductItem>> getAllProductItems() {
@@ -42,6 +47,10 @@ public class MyRepository {
         return allStock;
     }
 
+    public LiveData<List<ProductItem>> getAllProductsById() {
+        return allProductsById;
+    }
+
     public void insert(ProductItem productItem) {
         Inventorydb.databaseWriteExecutor.execute(() -> {
             dao.insertProductItem(productItem);
@@ -52,20 +61,6 @@ public class MyRepository {
         Inventorydb.databaseWriteExecutor.execute(() -> {
             dao.insertProductAttribute(productAttribute);
         });
-    }
-
-    public int getProductIdByName(String productName) {
-        Inventorydb.databaseWriteExecutor.execute(() -> {
-            productId = dao.getProductIdByName(productName);
-        });
-        return productId;
-    }
-
-    public int getLastProductId() {
-        Inventorydb.databaseWriteExecutor.execute(() -> {
-            productId = dao.getLastProductId();
-        });
-        return productId;
     }
 
     public void insert(Category category) {

@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Inventory">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,17 +25,18 @@
         </activity>
 
         <activity
-            android:name=".AddCategoryActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".ui.AddCategoryActivity"
+            android:parentActivityName=".ui.MainActivity" />
 
         <activity
-            android:name=".AddProductItemActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".ui.AddProductItemActivity"
+            android:parentActivityName=".ui.MainActivity" />
 
-        <activity android:name=".StockListingActivity"
-            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".ui.StockListingActivity"
+            android:parentActivityName=".ui.MainActivity"/>
 
-        <activity android:name=".ViewStockItemActivity"/>
+        <activity android:name=".ui.ViewStockItemActivity"
+            android:parentActivityName=".ui.MainActivity"/>
     </application>
 
 </manifest>

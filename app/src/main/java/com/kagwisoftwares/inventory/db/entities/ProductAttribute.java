@@ -1,4 +1,4 @@
-package com.kagwisoftwares.inventory.entities;
+package com.kagwisoftwares.inventory.db.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

@@ -12,17 +12,20 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kagwisoftwares.inventory.R;
-import com.kagwisoftwares.inventory.ViewStockItemActivity;
-import com.kagwisoftwares.inventory.entities.ProductItem;
+import com.kagwisoftwares.inventory.ui.ViewStockItemActivity;
+import com.kagwisoftwares.inventory.db.entities.ProductItem;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class StockListingAdapter extends RecyclerView.Adapter<StockListingAdapter.ViewHolder> {
 
     private final List<ProductItem> stockItems;
-    DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+    private DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+    private ExecutorService service;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView stockItem, stockTotal, stockUpdated;
@@ -50,6 +53,7 @@ public class StockListingAdapter extends RecyclerView.Adapter<StockListingAdapte
 
     public StockListingAdapter(List<ProductItem> stockItems) {
         this.stockItems = stockItems;
+        service = Executors.newFixedThreadPool(3);
     }
 
     @Override

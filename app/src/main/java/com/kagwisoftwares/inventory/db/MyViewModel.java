@@ -1,14 +1,13 @@
-package com.kagwisoftwares.inventory.viewmodels;
+package com.kagwisoftwares.inventory.db;
 
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.kagwisoftwares.inventory.entities.Category;
-import com.kagwisoftwares.inventory.entities.ProductItem;
+import com.kagwisoftwares.inventory.db.entities.Category;
+import com.kagwisoftwares.inventory.db.entities.ProductItem;
 import com.kagwisoftwares.inventory.models.StockCategoriesModel;
-import com.kagwisoftwares.inventory.repositories.MyRepository;
 
 import java.util.List;
  
@@ -16,9 +15,11 @@ public class MyViewModel extends AndroidViewModel {
 
     private MyRepository mRepository;
 
-    private final LiveData<List<ProductItem>> allProducts;
-    private final LiveData<List<Category>> allCategories;
-    private final LiveData<List<StockCategoriesModel>> allStock;
+    private LiveData<List<ProductItem>> allProducts;
+    private LiveData<List<Category>> allCategories;
+    private LiveData<List<StockCategoriesModel>> allStock;
+    private LiveData<List<ProductItem>> allProductsById;
+
 
     public MyViewModel(Application application) {
         super(application);
@@ -30,6 +31,12 @@ public class MyViewModel extends AndroidViewModel {
 
     public LiveData<List<ProductItem>> getAllProducts() {
         return allProducts;
+    }
+
+    public LiveData<List<ProductItem>> getAllProductsById(Application application, int itemId) {
+        mRepository = new MyRepository(application, itemId);
+        allProductsById = mRepository.getAllProductsById();
+        return allProductsById;
     }
 
     public void insertProductItem(ProductItem item) {

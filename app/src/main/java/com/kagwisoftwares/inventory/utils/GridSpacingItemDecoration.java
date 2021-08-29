@@ -1,4 +1,4 @@
-package com.kagwisoftwares.inventory.decorators;
+package com.kagwisoftwares.inventory.utils;
 
 import android.graphics.Rect;
 import android.view.View;

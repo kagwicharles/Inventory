@@ -18,15 +18,12 @@ public class DashAdapter extends RecyclerView.Adapter<DashAdapter.ViewHolder> {
     private ArrayList<ItemModel> products;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView itemName, itemTotal, itemPercent;
-        private final ImageView itemIcon;
+        private final TextView itemName, itemTotal;
 
         public ViewHolder(View view) {
             super(view);
             itemName = (TextView) view.findViewById(R.id.txtitemName);
             itemTotal = (TextView) view.findViewById(R.id.txtitemTotal);
-            itemPercent = (TextView) view.findViewById(R.id.txtitemPercentage);
-            itemIcon = (ImageView) view.findViewById(R.id.imgitemIcon);
         }
 
         public TextView getItemName() {
@@ -35,14 +32,6 @@ public class DashAdapter extends RecyclerView.Adapter<DashAdapter.ViewHolder> {
 
         public TextView getItemTotal() {
             return itemTotal;
-        }
-
-        public TextView getItemPercent() {
-            return itemPercent;
-        }
-
-        public ImageView getItemIcon() {
-            return itemIcon;
         }
     }
 
@@ -62,8 +51,6 @@ public class DashAdapter extends RecyclerView.Adapter<DashAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         viewHolder.getItemName().setText(products.get(position).getItemName());
         viewHolder.getItemTotal().setText(String.valueOf(products.get(position).getItemTotal()));
-        viewHolder.getItemPercent().setText(String.valueOf(products.get(position).getItemPercent()));
-        viewHolder.getItemIcon().setImageResource(products.get(position).getItemIcon());
     }
 
     @Override

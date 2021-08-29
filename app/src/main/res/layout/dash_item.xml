@@ -9,7 +9,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:id="@+id/txtitemName"
@@ -29,48 +31,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:text="300"
-            app:layout_constraintBottom_toTopOf="@+id/txtitemPercentage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtitemName" />
-
-        <TextView
-            android:id="@+id/txtitemPercentage"
-            style="@style/SubtitleTextAppearance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="+0.005"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imgitemIcon"
-            app:layout_constraintTop_toBottomOf="@+id/txtitemTotal" />
-
-        <ImageView
-            android:id="@+id/imgitemIcon"
-            android:layout_width="30dp"
-            android:layout_height="0dp"
-            android:adjustViewBounds="false"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="@+id/txtitemPercentage"
-            app:layout_constraintEnd_toStartOf="@+id/txtitemPercentage"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/txtitemPercentage"
-            app:srcCompat="@drawable/ic_increase_green" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="%"
-            app:layout_constraintBottom_toBottomOf="@+id/txtitemPercentage"
-            app:layout_constraintStart_toEndOf="@+id/txtitemPercentage"
-            app:layout_constraintTop_toTopOf="@+id/txtitemPercentage" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -1,4 +1,4 @@
-package com.kagwisoftwares.inventory;
+package com.kagwisoftwares.inventory.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,11 +15,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.kagwisoftwares.inventory.entities.Category;
-import com.kagwisoftwares.inventory.utils.MyTransitions;
-import com.kagwisoftwares.inventory.viewmodels.MyViewModel;
+import com.kagwisoftwares.inventory.R;
+import com.kagwisoftwares.inventory.db.entities.Category;
+import com.kagwisoftwares.inventory.db.MyViewModel;
 
 import java.io.ByteArrayOutputStream;
 
@@ -33,7 +34,9 @@ public class AddCategoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product);
-        getSupportActionBar().setTitle("Create Product");
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Create Product");
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         imageView = (ImageView) findViewById(R.id.imgbrandLogo);

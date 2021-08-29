@@ -4,29 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp">
+    android:layout_marginStart="20dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="20dp"
+    android:background="#fff"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tvIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/bg_circle"
+        android:gravity="center"
+        android:text="A"
+        android:textColor="#fff"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/item_attribute"
         style="@style/SubtitleTextAppearance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
         android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/item_property"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/tvIcon"
+        app:layout_constraintTop_toTopOf="@+id/tvIcon" />
 
     <TextView
         android:id="@+id/item_property"
         style="@style/SmallTitleTextAppearance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/item_attribute"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/item_attribute"
-        app:layout_constraintTop_toTopOf="@+id/item_attribute" />
+        app:layout_constraintStart_toStartOf="@+id/item_attribute"
+        app:layout_constraintTop_toBottomOf="@+id/item_attribute" />
 </androidx.constraintlayout.widget.ConstraintLayout>

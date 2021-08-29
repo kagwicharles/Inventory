@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/txtproductName"
@@ -12,30 +14,21 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:text="product"
-        app:layout_constraintStart_toEndOf="@+id/imgproductIcon"
-        app:layout_constraintTop_toTopOf="@+id/imgproductIcon" />
+        app:layout_constraintStart_toEndOf="@id/imgproductIcon"
+        app:layout_constraintTop_toTopOf="@id/imgproductIcon" />
+
 
     <ImageView
         android:id="@+id/imgproductIcon"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="16dp"
-        android:padding="4dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal|center_vertical|center"
+        android:padding="10dp"
+        android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_image_24"
-        android:backgroundTint="#fafafa"/>
-
-    <ImageView
-        android:id="@+id/imgarrowRight"
-        android:layout_width="40dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="25dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imgproductIcon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imgproductIcon"
-        app:srcCompat="@drawable/ic_right_arrow" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
@@ -58,5 +51,18 @@
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="@+id/textView2" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="5dp"
+        android:padding="10dp"
+        android:tint="#bf2f1f"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.666"
+        app:srcCompat="@drawable/ic_delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
