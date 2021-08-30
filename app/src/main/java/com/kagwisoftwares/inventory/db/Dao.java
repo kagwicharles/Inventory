@@ -79,4 +79,7 @@ public interface Dao {
 
     @Query("SELECT COUNT(*) FROM category")
     int getTotalCategories();
+
+    @Query("SELECT * FROM category ORDER BY category_name ASC")
+    List<Category> getAllCategoryItems();
 }

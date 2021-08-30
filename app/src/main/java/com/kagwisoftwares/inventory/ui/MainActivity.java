@@ -1,5 +1,6 @@
 package com.kagwisoftwares.inventory.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -24,6 +25,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.kagwisoftwares.inventory.R;
 import com.kagwisoftwares.inventory.adapters.DashAdapter;
 import com.kagwisoftwares.inventory.adapters.ProductsAdapter;
+import com.kagwisoftwares.inventory.db.Inventorydb;
 import com.kagwisoftwares.inventory.db.entities.Category;
 import com.kagwisoftwares.inventory.utils.AuthenticateApp;
 import com.kagwisoftwares.inventory.utils.GridSpacingItemDecoration;
@@ -133,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<ProductItem> productItems) {
                 setDashItems();
+                setProductsRecycler();
             }
         });
 
@@ -141,9 +144,7 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(List<Category> categories) {
                 int noOfProducts = categories.size();
                 categoriesList = categories;
-                productsAdapter = new ProductsAdapter(categories, MainActivity.this);
-                productsRecycler.setAdapter(productsAdapter);
-
+                setProductsRecycler();
                 setDashItems();
 
                 if (noOfProducts == 0) {
@@ -177,6 +178,24 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         itemsRecycler.setAdapter(new DashAdapter(items));
+    }
+
+    void setProductsRecycler() {
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                categoriesList = Inventorydb.getDatabase(getApplicationContext())
+                        .dao().getAllCategoryItems();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        productsAdapter = new ProductsAdapter(categoriesList, MainActivity.this);
+                        productsRecycler.setAdapter(productsAdapter);
+                    }
+                });
+            }
+        };
+        thread.start();
     }
 
     @Override
