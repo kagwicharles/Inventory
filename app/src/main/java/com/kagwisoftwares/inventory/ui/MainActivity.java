@@ -187,8 +187,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.logout)
+        if (item.getItemId() == R.id.logout) {
             authenticateApp.clearCredentials();
+            finish();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
         return true;
     }
 
