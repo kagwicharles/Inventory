@@ -70,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPreExecute() {
             pd = new ProgressDialog(LoginActivity.this);
             pd.setMessage("loading");
+            pd.setCancelable(false);
             pd.show();
         }
 
