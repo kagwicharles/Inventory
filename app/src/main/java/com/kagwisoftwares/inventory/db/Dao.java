@@ -16,14 +16,11 @@ import java.util.List;
 @androidx.room.Dao
 public interface Dao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.FAIL)
     void insertProductItem(ProductItem productItem);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertProductAttribute(ProductAttribute productAttribute);
-
-    @Query("DELETE FROM product_item")
-    void deleteAllPhone();
 
     @Query("SELECT * FROM product_item ORDER BY item_name ASC")
     LiveData<List<ProductItem>> getProductItems();
@@ -31,7 +28,7 @@ public interface Dao {
     @Query("SELECT * FROM product_item WHERE categoryId=:id ORDER BY item_name ASC")
     LiveData<List<ProductItem>> getProductItemsById(int id);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.FAIL)
     void insertCategory(Category category);
 
     @Query("DELETE FROM category WHERE id=:categoryId")

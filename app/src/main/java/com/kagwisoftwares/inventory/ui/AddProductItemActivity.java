@@ -185,9 +185,13 @@ public class AddProductItemActivity extends AppCompatActivity {
                             productItem.setDate(Calendar.getInstance().getTime());
                             productItem.setItem_units(totalUnits);
                             productItem.setItem_image(setProductImage());
-                            myViewModel.insertProductItem(productItem);
-                            insertProductAttributes(productName, productAttributes);
-                            finish();
+                            boolean success = myViewModel.insertProductItem(productItem);
+                            if (success){
+                                insertProductAttributes(productName, productAttributes);
+                                finish();
+                            } else {
+                                Toast.makeText(AddProductItemActivity.this, productItem.getItem_name()+" already exits", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             Toast.makeText(getApplicationContext(), "Unable to save", Toast.LENGTH_SHORT).show();
                         }

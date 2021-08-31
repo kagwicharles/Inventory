@@ -39,16 +39,16 @@ public class MyViewModel extends AndroidViewModel {
         return allProductsById;
     }
 
-    public void insertProductItem(ProductItem item) {
-        mRepository.insert(item);
+    public boolean insertProductItem(ProductItem item) {
+        return mRepository.insert(item);
     }
 
     public LiveData<List<Category>> getAllCategories() {
         return allCategories;
     }
 
-    public void insertCategory(Category category) {
-        mRepository.insert(category);
+    public boolean insertCategory(Category category) {
+        return mRepository.insert(category);
     }
 
     public LiveData<List<StockCategoriesModel>> getAllStock() { return allStock; }

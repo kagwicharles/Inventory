@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
@@ -12,7 +13,7 @@ import java.util.Date;
         parentColumns = "id",
         childColumns = "categoryId",
         onDelete = ForeignKey.CASCADE)
-})
+}, indices = {@Index(value = {"item_name"}, unique = true)})
 public class ProductItem {
 
     @PrimaryKey(autoGenerate = true)
@@ -67,7 +68,7 @@ public class ProductItem {
     public int getItem_units() {
         return item_units;
     }
-    
+
     public int getCategoryId() {
         return categoryId;
     }

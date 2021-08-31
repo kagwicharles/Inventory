@@ -2,6 +2,7 @@ package com.kagwisoftwares.inventory.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaParser;
@@ -143,8 +144,12 @@ public class AddCategoryActivity extends AppCompatActivity {
             return;
         }
         category.setDate_created(getDate());
-        new MyViewModel(getApplication()).insertCategory(category);
-        clear();
+        boolean success = new MyViewModel(getApplication()).insertCategory(category);
+        if (success)
+            clear();
+        else
+            Toast.makeText(this, category.getCategory_name() + " already exists!", Toast.LENGTH_SHORT).show();
+
     }
 
     byte[] convertToByteArray(Bitmap bitmap) {
