@@ -203,6 +203,7 @@ public class AddProductItemActivity extends AppCompatActivity {
         boolean valuesCorrect = true;
         category = categories.getEditableText().toString();
         productName = et_productName.getText().toString();
+        totalUnits = Integer.parseInt(txt_totalUnits.getText().toString());
         if (category.equals("") || productName.equals("")) {
             return false;
         }
